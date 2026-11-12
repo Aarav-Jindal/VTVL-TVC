@@ -1,0 +1,64 @@
+item,qty,each_g,group,where
+# Hardware list (second pass), one row per part or group, with where it sits for vehicle_layout.py.
+# group: known (CAD, catalog, calculated) or est (estimate / placeholder), the same split as the mass margins.
+# where: avionics, he_valves (regulator stack under the bottle), he_bottle, eth_top, eth_bottom, n2o_top, n2o_bottom,
+#        engine_bay (fixed plumbing above the engine), engine (at the CAD center of mass), engine_top (on the injector back
+#        face or pintle head; engine and engine_top parts swing with the gimbal), gimbal (at the pivot),
+#        legs, body (spread along the whole body tube), rings (one at each tank end)
+# massIteration.py sums this list for the mass budget and adds the engine and gimbal parts (m_engine_cad_kg, m_gimbal_cad_kg, from the CAD) and the body tube
+# (body_tube_kg_per_m x its length, which grows with the tanks); vehicle_layout.py places every row.
+Regulators PR-1 x2 Ninja + bottle adapters + outlet adapters,2,410,est,he_valves
+Pressurize valve SV-1: 42GS4 + servo + bracket,1,197,est,he_valves
+Relief RV-1 SS-4R3A,1,400,est,he_valves
+Check valve CV-1 Nuvair,1,70,known,he_valves
+Helium fill QD-1 and burst disc BD-1,1,60,est,he_valves
+Pressure sensor PT-1 Turck,1,97,known,he_valves
+Helium end fittings and bottle crossover,1,240,est,he_valves
+Vent valve SV-3: 42GS4 + servo + bracket,1,197,est,eth_top
+Relief RV-3 SS-4R3A,1,400,est,eth_top
+Pressure sensor PT-4 Turck + adapter,1,147,est,eth_top
+Check valve CV-3 Western + 2 adapters,1,180,est,eth_top
+Ethanol top cap connectors,3,39,est,eth_top
+Main valve MFV: 43GS6 + servo + bracket,1,327,est,eth_bottom
+Filter F-2 SS-6F-40,1,230,est,eth_bottom
+Fill/drain valve MV-1 43GS6,1,170,est,eth_bottom
+Ethanol bottom cap connectors,1,148,est,eth_bottom
+Vent valve SV-2: 42GS4 + servo + bracket,1,197,est,n2o_top
+Relief RV-2 SS-4R3A,1,400,est,n2o_top
+Pressure sensor PT-3 Turck + adapter,1,147,est,n2o_top
+Thermocouple TC-1 + bored connector,1,57,est,n2o_top
+Check valve CV-2 Western + 2 adapters,1,180,est,n2o_top
+Nitrous top cap connectors,3,39,est,n2o_top
+Main valve MOV: 43GS8 + servo + bracket,1,327,est,n2o_bottom
+Filter F-1 SS-8F-40,1,323,est,n2o_bottom
+Check valve CV-4 Western + 2 adapters,1,180,est,n2o_bottom
+Nitrous fill QD-2 Swagelok QC4,1,100,est,n2o_bottom
+Nitrous bottom cap connectors,1,145,est,n2o_bottom
+Throttle valves OTV SS-1VS8 and FTV SS-1VS6,2,280,est,engine_top
+Throttle actuators: goBILDA 25-2 servo + gears + G10 bracket + nut + screws (CAD; bracket and gears est),2,111,known,engine_top
+Connector and stub at the nitrous throttle,1,170,est,engine_top
+Flex hoses -10 and -6 with ends,1,700,est,engine_bay
+Tubing: ethanol down the body and helium and vent lines,1,600,est,body
+Body tube joints: 6061 ring + 16 M4x8 (CAD; ring est),2,323,known,body
+Pressure sensor PT-8 (Pc): Turck 0-500 psi + 2 fittings + tube (CAD; fittings est),1,200,known,engine_top
+Engine bolts nuts O-rings,1,120,est,engine
+Engine port fittings,2,30,est,engine
+Spark torch: body + plug and cap + 2 fittings + 2 tubes (CAD; est),1,146,known,engine_top
+Spark module CH Ignitions CM-6 + G10 plate + hardware (CAD; plate est),1,120,known,engine_bay
+Gimbal hardware: pins bushings screws pushrods ball links horns,1,200,est,gimbal
+Gimbal servos,2,81,known,gimbal
+Flight computer + IMU + barometer + GPS + radio,1,43,known,avionics
+Servo battery Gens Ace 3S 2200 mAh (10 servos),1,175,known,avionics
+Avionics battery,1,66,known,avionics
+7.4 V BEC Castle + G10 plate + tie + hardware (CAD; plate est),1,60,known,engine_bay
+6.6 V BEC Castle,1,34,known,avionics
+Custom PCB 30 + vent backup 20 (placeholders),1,50,est,avionics
+Antennas: 2 Linx dipoles,1,18,known,avionics
+Wiring harness (rough count),1,504,est,body
+Bay ring + tray + standoffs + plates + straps + switches + screws (CAD; est),1,323,known,avionics
+Dome + 8 inserts + 8 M4x8 (CAD; est),1,237,known,avionics
+Tank rings and screws,4,215,known,rings
+Brackets mounts fasteners,1,200,est,body
+Bottle rings: G10 ring + liner + 8 M4 screws (CAD; liners est),4,176,known,he_bottle
+Line supports: 9 rubber blocks + 4 cushion clips with spacers nuts screws (CAD; est),1,41,known,body
+Landing legs: 4 legs + hinge ring + release servo (CAD; fittings est),1,4250,known,legs

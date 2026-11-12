@@ -1,0 +1,2483 @@
+{
+  "Pc_psi": {
+    "value": 300,
+    "unit": "psia",
+    "source": "input",
+    "note": "Chamber pressure. Lowered from 640 so regen cooling works"
+  },
+  "Pe_psi": {
+    "value": 14.7,
+    "unit": "psia",
+    "source": "input",
+    "note": "Nozzle exit pressure (sea level)"
+  },
+  "mixture_ratio": {
+    "value": 3.5,
+    "unit": "-",
+    "source": "input",
+    "note": "O/F. Fuel-rich of the 4.5 Isp peak: cooler chamber, more coolant"
+  },
+  "efficiency": {
+    "value": 0.9,
+    "unit": "-",
+    "source": "input",
+    "note": "Real Isp and c* as a fraction of ideal (placeholder)"
+  },
+  "L_star_m": {
+    "value": 1.62,
+    "unit": "m",
+    "source": "input",
+    "note": "1.62 (was 1.12; 1200 N, 8 in body 2026-11-05). 1.12 (was 1; 575 N refit 2026-11-04). Characteristic length. 1.0 m (was 0.9; raised 2026-11-03 so the 410 N pintle tip uses <50% of the straight chamber and the gases get more room to burn)"
+  },
+  "contraction_ratio": {
+    "value": 25.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Chamber area / throat area"
+  },
+  "converging_angle_deg": {
+    "value": 45,
+    "unit": "deg",
+    "source": "input",
+    "note": "Converging half-angle"
+  },
+  "diverging_angle_deg": {
+    "value": 15,
+    "unit": "deg",
+    "source": "input",
+    "note": "Conical nozzle half-angle"
+  },
+  "thrust_to_weight": {
+    "value": 1.3,
+    "unit": "-",
+    "source": "input",
+    "note": "Lowest T/W allowed at liftoff before the engine needs resizing. The delta-v budget (delta_v_mps) assumed T/W 1.5: re-check it if T/W gets near 1.3"
+  },
+  "delta_v_mps": {
+    "value": 470.6,
+    "unit": "m/s",
+    "source": "input",
+    "note": "2000 ft flight + 5 s hover, T/W 1.5, 10% margin"
+  },
+  "hardware_known_kg": {
+    "value": 8.474,
+    "unit": "kg",
+    "source": "massIteration.py",
+    "note": "Known-mass hardware before margin, NOT counting the engine parts: computed by massIteration.py from parts_list.csv (group 'known')"
+  },
+  "hardware_est_kg": {
+    "value": 8.97,
+    "unit": "kg",
+    "source": "massIteration.py",
+    "note": "Estimated hardware before margin, NOT counting the body tube: computed by massIteration.py from parts_list.csv (group 'est')"
+  },
+  "margin_known": {
+    "value": 1.1,
+    "unit": "-",
+    "source": "input",
+    "note": "Growth margin on known masses: known hardware and the tanks"
+  },
+  "margin_est": {
+    "value": 1.25,
+    "unit": "-",
+    "source": "input",
+    "note": "Growth margin on estimated masses: estimated hardware and the helium bottle (seller-listed mass)"
+  },
+  "P_tank_psi": {
+    "value": 1100,
+    "unit": "psia",
+    "source": "input",
+    "note": "Propellant tank pressure. Raised from 900 for nitrous liquid margin"
+  },
+  "feed_losses_psi": {
+    "value": 100,
+    "unit": "psi",
+    "source": "input",
+    "note": "Lines 30 + main valve 20 + throttle valve 50 (placeholders; the ethanol throttle now sits after the jacket, so this is conservative for the jacket)"
+  },
+  "ullage_factor": {
+    "value": 1.15,
+    "unit": "-",
+    "source": "input",
+    "note": "Tank volume = propellant volume x this"
+  },
+  "rho_N2O": {
+    "value": 743,
+    "unit": "kg/m^3",
+    "source": "input",
+    "note": "Liquid N2O at 25 C (NIST)"
+  },
+  "rho_ethanol": {
+    "value": 789,
+    "unit": "kg/m^3",
+    "source": "input",
+    "note": "Liquid ethanol at 25 C"
+  },
+  "tank_outer_radius_m": {
+    "value": 0.0762,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0762 (was 0.0508; 1200 N, 8 in body 2026-11-05). 4 in OD 6061-T6 tube"
+  },
+  "tank_wall_m": {
+    "value": 0.004775,
+    "unit": "m",
+    "source": "input",
+    "note": "0.004775 (was 0.003175; 1200 N, 8 in body 2026-11-05). 0.125 in wall"
+  },
+  "tank_safety_factor": {
+    "value": 2,
+    "unit": "-",
+    "source": "input",
+    "note": "On yield"
+  },
+  "m_sizing_frozen_kg": {
+    "value": 86.23214470565146,
+    "unit": "kg",
+    "source": "input",
+    "note": "Decided 2026-11-06: propellant and tanks are sized at this mass, not the wet mass, so the CAD stays in step when masses change. Exactly the propellant the CAD's tanks were sized for (18.50 kg). Also depends on delta_v_mps and Isp_real_s: changing those still changes the tanks"
+  },
+  "tank_wall_SF_accepted": {
+    "value": 1.99,
+    "unit": "-",
+    "source": "input",
+    "note": "Exception for the tank tube wall hoop check only, accepted 2026-11-05: 0.188 in gives 1.991 at 1100 psi on 35 ksi. tank_safety_factor stays 2 for the caps and screws. Measure the real tube wall"
+  },
+  "tank_yield_Pa": {
+    "value": 241000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "2.41e+08 (was 276000000.0; 1200 N, 8 in body 2026-11-05). 6061-T6 at room temperature"
+  },
+  "bulkhead_mass_kg": {
+    "value": 1.22,
+    "unit": "kg",
+    "source": "input",
+    "note": "1.22 (was 0.41; 1200 N, 8 in body 2026-11-05). Per tank end cap, 2 per tank: 0.31 kg cap (feed_system.py) + 16 x 1/4-20 screws (~0.10 kg est.)"
+  },
+  "bulkhead_length_m": {
+    "value": 0.07,
+    "unit": "m",
+    "source": "input",
+    "note": "0.07 (was 0.04; 1200 N, 8 in body 2026-11-05). Tube length added per tank for bulkheads (placeholder)"
+  },
+  "He_margin": {
+    "value": 1.28,
+    "unit": "-",
+    "source": "input",
+    "note": "Extra helium for expansion cooling (placeholder). 1.28, was 1.30 (2026-11-05): the 575 N engine CAD pushed the need just past the 285 ci bottle"
+  },
+  "He_bottle_full_psi": {
+    "value": 4500,
+    "unit": "psia",
+    "source": "input",
+    "note": "Helium bottle fill pressure"
+  },
+  "regulator_dropout_psi": {
+    "value": 150,
+    "unit": "psi",
+    "source": "input",
+    "note": "Bottle must stay this far above tank pressure to keep regulating"
+  },
+  "T_wg_K": {
+    "value": 750,
+    "unit": "K",
+    "source": "input",
+    "note": "Design hot-side wall temperature. 50 K under T_wall_max_K so print errors don't overheat the wall"
+  },
+  "film_fraction": {
+    "value": 0.2,
+    "unit": "-",
+    "source": "input",
+    "note": "Fraction of ethanol sent to the wall film. Borderline on paper, confirm by test"
+  },
+  "film_eta": {
+    "value": 0.4,
+    "unit": "-",
+    "source": "input",
+    "note": "Fraction of the film that stays on the wall (placeholder)"
+  },
+  "cp_film_vapor": {
+    "value": 2500,
+    "unit": "J/(kg*K)",
+    "source": "input",
+    "note": "Ethanol vapor cp, average 500-1000 K (placeholder)"
+  },
+  "n_channels": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Regen channels. Straight in the chamber, twisting into a helix toward the throat and nozzle"
+  },
+  "channel_width_m": {
+    "value": 0.002,
+    "unit": "m",
+    "source": "input",
+    "note": "0.002 (was 0.001; 1200 N, 8 in body 2026-11-05). 0.001 (was 0.0008; 575 N refit 2026-11-04). Constant channel width (printed). 0.8 mm (was 0.6; widened 2026-11-03 for the 410 N engine to cut the jacket drop)"
+  },
+  "hot_wall_m": {
+    "value": 0.0008,
+    "unit": "m",
+    "source": "input",
+    "note": "Wall between hot gas and channel bottom (placeholder)"
+  },
+  "channel_roughness_m": {
+    "value": 1.5e-05,
+    "unit": "m",
+    "source": "input",
+    "note": "As-printed metal 3D print (L-PBF) channel surface, ~10-20 um (milled was 3.2 um)"
+  },
+  "T_wall_max_K": {
+    "value": 800,
+    "unit": "K",
+    "source": "input",
+    "note": "Max allowed hot-side wall temperature (CuCrZr), checked with channels printed oversize"
+  },
+  "channel_depth_min_m": {
+    "value": 0.0005,
+    "unit": "m",
+    "source": "input",
+    "note": "Shallowest channel that can be printed and depowdered (L-PBF, ~0.5 mm; confirm with the print shop)"
+  },
+  "rib_min_m": {
+    "value": 0.0006,
+    "unit": "m",
+    "source": "input",
+    "note": "Thinnest rib between channels that prints reliably"
+  },
+  "helix_angle_max_deg": {
+    "value": 70,
+    "unit": "deg",
+    "source": "input",
+    "note": "Steepest channel twist allowed, measured from the engine axis"
+  },
+  "helix_ramp_deg_per_mm": {
+    "value": 3,
+    "unit": "deg/mm",
+    "source": "input",
+    "note": "How fast the twist may change along the wall, so the channels bend smoothly"
+  },
+  "helix_overhang_depth_max_m": {
+    "value": 0.001,
+    "unit": "m",
+    "source": "input",
+    "note": "Above 45 deg of twist the channel roof faces down while printing; keep those channels this shallow so the roof bridges"
+  },
+  "print_tolerance_m": {
+    "value": 5e-05,
+    "unit": "m",
+    "source": "input",
+    "note": "Print size error used to check the wall temperature (channels 0.05 mm deeper and wider)"
+  },
+  "T_coolant_in_K": {
+    "value": 298,
+    "unit": "K",
+    "source": "input",
+    "note": "Ethanol entering the jacket"
+  },
+  "thrust_N": {
+    "value": 1200.0,
+    "unit": "N",
+    "source": "input",
+    "note": "1200 (was 575.0; 1200 N, 8 in body 2026-11-05). Fixed 2026-11-04: sized for a 45 kg rocket at T/W 1.3 (1.47 at 40 kg), because real parts keep adding mass. Was 410 N"
+  },
+  "Isp_ideal_s": {
+    "value": 220.78432229825034,
+    "unit": "s",
+    "source": "cea_analysis.py"
+  },
+  "Isp_real_s": {
+    "value": 198.7058900684253,
+    "unit": "s",
+    "source": "cea_analysis.py"
+  },
+  "cstar_real_mps": {
+    "value": 1398.8799510290528,
+    "unit": "m/s",
+    "source": "cea_analysis.py"
+  },
+  "Tc_K": {
+    "value": 2900.404997349787,
+    "unit": "K",
+    "source": "cea_analysis.py"
+  },
+  "gamma": {
+    "value": 1.1904678909480124,
+    "unit": "-",
+    "source": "cea_analysis.py"
+  },
+  "mu_gas_Pa_s": {
+    "value": 9.066637382570096e-05,
+    "unit": "Pa*s",
+    "source": "cea_analysis.py"
+  },
+  "cp_gas_J_kgK": {
+    "value": 1810.1333391233238,
+    "unit": "J/(kg*K)",
+    "source": "cea_analysis.py"
+  },
+  "Pr_gas": {
+    "value": 0.6452600845207672,
+    "unit": "-",
+    "source": "cea_analysis.py"
+  },
+  "Ae_At": {
+    "value": 3.425095363423343,
+    "unit": "-",
+    "source": "cea_analysis.py"
+  },
+  "mdot_total_kgps": {
+    "value": 0.6158143853471787,
+    "unit": "kg/s",
+    "source": "cea_analysis.py"
+  },
+  "mdot_ox_kgps": {
+    "value": 0.47896674415891677,
+    "unit": "kg/s",
+    "source": "cea_analysis.py"
+  },
+  "mdot_fuel_kgps": {
+    "value": 0.13684764118826193,
+    "unit": "kg/s",
+    "source": "cea_analysis.py"
+  },
+  "A_throat_mm2": {
+    "value": 416.476055930683,
+    "unit": "mm^2",
+    "source": "cea_analysis.py"
+  },
+  "R_chamber_mm": {
+    "value": 57.5691857597382,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "R_throat_mm": {
+    "value": 11.513837151947639,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "R_exit_mm": {
+    "value": 21.30867357672013,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "L_cyl_mm": {
+    "value": 45.76378924211324,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "L_converging_mm": {
+    "value": 46.05534860779056,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "L_nozzle_mm": {
+    "value": 36.554827189077216,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "L_total_mm": {
+    "value": 128.37396503898103,
+    "unit": "mm",
+    "source": "cea_analysis.py"
+  },
+  "V_chamber_cm3": {
+    "value": 674.6912106077065,
+    "unit": "cm^3",
+    "source": "cea_analysis.py"
+  },
+  "propellant_fraction": {
+    "value": 0.2145526687588295,
+    "unit": "-",
+    "source": "massIteration.py"
+  },
+  "m_wet_kg": {
+    "value": 89.11351834692391,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_dry_kg": {
+    "value": 70.16886115346949,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_prop_kg": {
+    "value": 18.501336779395093,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_N2O_kg": {
+    "value": 14.389928606196182,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_ethanol_kg": {
+    "value": 4.11140817319891,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_He_kg": {
+    "value": 0.44332041405933154,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "L_tank_N2O_m": {
+    "value": 1.3896879604789585,
+    "unit": "m",
+    "source": "massIteration.py"
+  },
+  "L_tank_ethanol_m": {
+    "value": 0.37390481790181657,
+    "unit": "m",
+    "source": "massIteration.py"
+  },
+  "m_tank_N2O_kg": {
+    "value": 11.167843481963896,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "m_tank_ethanol_kg": {
+    "value": 5.0942191731618305,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "He_bottle_needed_ci": {
+    "value": 747.2544718752805,
+    "unit": "ci",
+    "source": "massIteration.py"
+  },
+  "He_bottle": {
+    "value": "2 x Luxfer ECLIPSE PRO L66P 834/4500 in line",
+    "unit": "-",
+    "source": "massIteration.py"
+  },
+  "He_bottle_mass_kg": {
+    "value": 6.8,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "q_throat_nofilm_W_m2": {
+    "value": 20232113.542761307,
+    "unit": "W/m^2",
+    "source": "heat_transfer.py"
+  },
+  "q_throat_film_W_m2": {
+    "value": 13123220.09682828,
+    "unit": "W/m^2",
+    "source": "heat_transfer.py"
+  },
+  "h_g_throat_W_m2K": {
+    "value": 9561.560451196123,
+    "unit": "W/(m^2*K)",
+    "source": "heat_transfer.py"
+  },
+  "Q_wall_nofilm_W": {
+    "value": 115117.68626381544,
+    "unit": "W",
+    "source": "heat_transfer.py"
+  },
+  "Q_wall_film_W": {
+    "value": 52833.5780625828,
+    "unit": "W",
+    "source": "heat_transfer.py"
+  },
+  "mdot_film_kgps": {
+    "value": 0.027369528237652388,
+    "unit": "kg/s",
+    "source": "heat_transfer.py"
+  },
+  "x_liquid_film_end_mm": {
+    "value": 18.000000000000004,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "T_coolant_out_K": {
+    "value": 425.381332193529,
+    "unit": "K",
+    "source": "heat_transfer.py"
+  },
+  "P_jacket_in_psi": {
+    "value": 1000.0,
+    "unit": "psia",
+    "source": "heat_transfer.py"
+  },
+  "jacket_dP_psi": {
+    "value": 115.50186479087466,
+    "unit": "psi",
+    "source": "heat_transfer.py"
+  },
+  "P_ethanol_injector_in_psi": {
+    "value": 884.4981352091254,
+    "unit": "psia",
+    "source": "heat_transfer.py"
+  },
+  "dP_ethanol_injector_psi": {
+    "value": 584.4981352091254,
+    "unit": "psi",
+    "source": "heat_transfer.py"
+  },
+  "max_wall_T_K": {
+    "value": 749.9889388549665,
+    "unit": "K",
+    "source": "heat_transfer.py"
+  },
+  "channel_depth_throat_mm": {
+    "value": 0.5,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "channel_depth_min_mm": {
+    "value": 0.5,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "channel_depth_max_mm": {
+    "value": 2.9900000000000064,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "regen_infeasible_stations": {
+    "value": 0,
+    "unit": "-",
+    "source": "heat_transfer.py"
+  },
+  "pintle_ratio": {
+    "value": 6.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Chamber diameter / pintle diameter. 6 gives blockage ~0.32 with 16 x 0.6 mm nitrous holes"
+  },
+  "injector_Cd": {
+    "value": 0.65,
+    "unit": "-",
+    "source": "input",
+    "note": "Discharge coefficient for injector passages (placeholder)"
+  },
+  "dP_ox_injector_psi": {
+    "value": 46.0,
+    "unit": "psi",
+    "source": "input",
+    "note": "46 (was 50; 575 N refit 2026-11-04). Nitrous injector drop at full thrust, 17% of Pc. Low to keep TMR ~2.4 with two-phase (fast) nitrous jets; OK for chug because the throttle valve is choked (isolates the feed). Leftover pressure is taken by the throttle valve"
+  },
+  "dP_eth_injector_psi": {
+    "value": 580.0,
+    "unit": "psi",
+    "source": "input",
+    "note": "580 (was 585.0; 1200 N: 584 psi left after the jacket)"
+  },
+  "D_pintle_mm": {
+    "value": 19.1897285865794,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "v_ox_injector_mps": {
+    "value": 40.732517424373334,
+    "unit": "m/s",
+    "source": "injector.py"
+  },
+  "v_eth_injector_mps": {
+    "value": 71.61557845446139,
+    "unit": "m/s",
+    "source": "injector.py"
+  },
+  "A_eth_holes_mm2": {
+    "value": 2.3202295373677617,
+    "unit": "mm^2",
+    "source": "injector.py"
+  },
+  "TMR": {
+    "value": 2.488351942098037,
+    "unit": "-",
+    "source": "injector.py"
+  },
+  "n_ox_radial_holes": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Nitrous radial holes near the pintle tip, one jet per ethanol stream (clock 0+45n). 16 at 1.2 mm would run into each other inside the 6 mm bore"
+  },
+  "n_eth_axial_holes": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Ethanol axial holes in a ring around the pintle base (one per two nitrous jets)"
+  },
+  "A_ox_holes_mm2": {
+    "value": 79.75938388136613,
+    "unit": "mm^2",
+    "source": "injector.py"
+  },
+  "d_eth_axial_hole_mm": {
+    "value": 0.6076808372656659,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "d_ox_radial_hole_mm": {
+    "value": 3.562878078560009,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "blockage_factor": {
+    "value": 0.47279431204308214,
+    "unit": "-",
+    "source": "injector.py"
+  },
+  "n_film_holes": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Film-cooling holes in a ring near the chamber wall"
+  },
+  "dP_film_holes_psi": {
+    "value": 25,
+    "unit": "psi",
+    "source": "input",
+    "note": "Drop across the film holes. Kept low so the holes can be bigger; a single restrictor upstream takes the rest"
+  },
+  "film_hole_wall_gap_m": {
+    "value": 0.002,
+    "unit": "m",
+    "source": "input",
+    "note": "Film hole ring sits this far inside the chamber wall (placeholder)"
+  },
+  "d_film_hole_mm": {
+    "value": 0.6668337033650952,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "R_film_ring_mm": {
+    "value": 55.5691857597382,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "film_hole_spacing_mm": {
+    "value": 43.643936437190014,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "d_film_restrictor_mm": {
+    "value": 0.8689089925647213,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "skip_ratio": {
+    "value": 1.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Skip distance / pintle diameter, typical ~0.5-1.5 (placeholder)"
+  },
+  "L_skip_mm": {
+    "value": 19.1897285865794,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "L_pintle_tip_mm": {
+    "value": 22.571167625859406,
+    "unit": "mm",
+    "source": "injector.py"
+  },
+  "k_liner": {
+    "value": 320,
+    "unit": "W/(m*K)",
+    "source": "input",
+    "note": "Liner thermal conductivity, CuCrZr (pure copper ~390)"
+  },
+  "liner_material": {
+    "value": "CuCrZr",
+    "unit": "-",
+    "source": "input",
+    "note": "Chosen for strength at ~800 K"
+  },
+  "manufacturing": {
+    "value": "metal 3D print (L-PBF): liner + jacket in one piece",
+    "unit": "-",
+    "source": "input",
+    "note": "Injector and pintle machined separately (small precise holes)"
+  },
+  "jacket_yield_Pa": {
+    "value": 250000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "Printed + heat-treated CuCrZr yield at ~430 K coolant temperature (placeholder, confirm with print service data)"
+  },
+  "jacket_safety_factor": {
+    "value": 2,
+    "unit": "-",
+    "source": "input",
+    "note": "On yield"
+  },
+  "jacket_min_m": {
+    "value": 0.0015,
+    "unit": "m",
+    "source": "input",
+    "note": "Minimum jacket wall for printing and handling"
+  },
+  "machining_stock_m": {
+    "value": 0.0004,
+    "unit": "m",
+    "source": "input",
+    "note": "Extra metal on the gas side, machined off after printing (throat to final size)"
+  },
+  "t_jacket_mm": {
+    "value": 3.4,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "jacket_outer_r_chamber_mm": {
+    "value": 64.7591857597382,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "flange_thickness_m": {
+    "value": 0.01,
+    "unit": "m",
+    "source": "input",
+    "note": "Chamber flange at the injector end, axial thickness. 10 mm: ring bending needs >= 8.8 mm"
+  },
+  "flange_outer_d_m": {
+    "value": 0.164,
+    "unit": "m",
+    "source": "input",
+    "note": "0.164 (was 0.128; 1200 N, 8 in body 2026-11-05). 0.128 (was 0.114; 575 N refit 2026-11-04). Chamber and injector flange outer diameter. 114 mm (was 108; 410 N refit 2026-11-03): same 3.25 mm edge margin past the bolt holes"
+  },
+  "bolt_circle_d_m": {
+    "value": 0.152,
+    "unit": "m",
+    "source": "input",
+    "note": "0.152 (was 0.116; 1200 N, 8 in body 2026-11-05). 0.116 (was 0.102; 575 N refit 2026-11-04). Flange bolt circle diameter. 102 mm (was 96; 410 N refit 2026-11-03): 3.2 mm land from the outer groove, 2.4 mm from the injector hub to the bolt heads"
+  },
+  "n_bolts": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Flange bolts"
+  },
+  "bolt_size": {
+    "value": "M5 class 12.9",
+    "unit": "-",
+    "source": "input",
+    "note": "Socket head cap screw, through both flanges with nuts (no threads in the printed part)"
+  },
+  "bolt_stress_area_m2": {
+    "value": 1.42e-05,
+    "unit": "m^2",
+    "source": "input",
+    "note": "M5 tensile stress area"
+  },
+  "bolt_proof_Pa": {
+    "value": 970000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "Class 12.9 proof strength"
+  },
+  "bolt_clearance_d_m": {
+    "value": 0.0055,
+    "unit": "m",
+    "source": "input",
+    "note": "M5 clearance hole"
+  },
+  "joint_safety_factor": {
+    "value": 2.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Total bolt preload / pressure separation load"
+  },
+  "oring_cs_m": {
+    "value": 0.00262,
+    "unit": "m",
+    "source": "input",
+    "note": "O-ring cross-section 0.103 in (AS568 -1xx series)"
+  },
+  "oring_groove_depth_m": {
+    "value": 0.00196,
+    "unit": "m",
+    "source": "input",
+    "note": "Face-seal groove depth for 0.103 in cross-section (~25% squeeze)"
+  },
+  "oring_groove_width_m": {
+    "value": 0.00356,
+    "unit": "m",
+    "source": "input",
+    "note": "Face-seal groove width for 0.103 in cross-section"
+  },
+  "inner_groove_id_m": {
+    "value": 0.122,
+    "unit": "m",
+    "source": "input",
+    "note": "0.122 (was 0.086; 1200 N, 8 in body 2026-11-05). 0.086 (was 0.072; 575 N refit 2026-11-04). Inner face-seal groove ID (seals chamber gas). 72 mm (was 60, which sat inside the 67.3 mm bore after the 410 N resize): 2.35 mm land from the bore. Pick the AS568-1xx ring to this groove"
+  },
+  "outer_groove_id_m": {
+    "value": 0.133,
+    "unit": "m",
+    "source": "input",
+    "note": "0.133 (was 0.097; 1200 N, 8 in body 2026-11-05). 0.097 (was 0.083; 575 N refit 2026-11-04). Outer face-seal groove ID (backup seal: no ethanol crosses the joint since the fuel throttle moved after the jacket). 83 mm (was 77; 410 N refit 2026-11-03): 1.9 mm land outside the inner groove"
+  },
+  "outlet_manifold_x_m": {
+    "value": 0.0035,
+    "unit": "m",
+    "source": "input",
+    "note": "Outlet manifold floor, this far from the injector face (1.5 mm above the O-ring groove bottoms)"
+  },
+  "outlet_manifold_outer_r_m": {
+    "value": 0.0681,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0681 (was 0.0497; 1200 N, 8 in body 2026-11-05). 0.0497 (was 0.0435; 575 N refit 2026-11-04). Outlet manifold outer radius. 43.5 mm (was 37.5; 410 N refit 2026-11-03): 6.1 mm wide on the rib tops, round-the-ring pressure change 0.2% of the jacket drop"
+  },
+  "manifold_roof_angle_deg": {
+    "value": 45,
+    "unit": "deg",
+    "source": "input",
+    "note": "Manifold roofs slope at least this much from flat so they print without supports (flange-down build)"
+  },
+  "manifold_rib_cut_m": {
+    "value": 5e-05,
+    "unit": "m",
+    "source": "input",
+    "note": "Manifold inner surface sits this far into the rib tops so every channel opens into it"
+  },
+  "inlet_manifold_end_gap_m": {
+    "value": 0.0015,
+    "unit": "m",
+    "source": "input",
+    "note": "Top of the inlet manifold (and end of the channels) this far below the nozzle exit"
+  },
+  "inlet_manifold_len_m": {
+    "value": 0.011,
+    "unit": "m",
+    "source": "input",
+    "note": "0.011 (was 0.009; 1200 N, 8 in body 2026-11-05). 0.009 (was 0.008; 575 N refit 2026-11-04). Inlet manifold length along the engine, floor to top. 8 mm (was 6.3; 410 N refit 2026-11-03): brings the floor closer to the port so the passage stays 1.6 mm clear of the widening nozzle jacket"
+  },
+  "inlet_manifold_outer_r_m": {
+    "value": 0.0285,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0285 (was 0.0212; 1200 N, 8 in body 2026-11-05). 0.0212 (was 0.0195; 575 N refit 2026-11-04). Inlet manifold outer radius. 19.5 mm (was 16.5; 410 N refit 2026-11-03): wide enough for the 4 mm passage at r 17 to open into its floor"
+  },
+  "inlet_collar_len_m": {
+    "value": 0.041,
+    "unit": "m",
+    "source": "input",
+    "note": "0.041 (was 0.033; the outer cone must reach the collar before touching the jacket)"
+  },
+  "inlet_collar_outer_r_m": {
+    "value": 0.0311,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0311 (was 0.0238; 1200 N, 8 in body 2026-11-05). 0.0238 (was 0.022; 575 N refit 2026-11-04). Inlet collar outer radius. 22 mm (was 19; 410 N refit 2026-11-03): 2.5 mm wall outside the inlet manifold"
+  },
+  "inlet_port": {
+    "value": "-4 ORB (7/16-20 UNF, SAE J1926)",
+    "unit": "-",
+    "source": "input",
+    "note": "Straight-thread O-ring port: no tapered thread wedging the printed part"
+  },
+  "inlet_port_drill_d_m": {
+    "value": 0.004,
+    "unit": "m",
+    "source": "input",
+    "note": "Port drill into the inlet manifold"
+  },
+  "inlet_port_boss_d_m": {
+    "value": 0.02,
+    "unit": "m",
+    "source": "input",
+    "note": "Port boss diameter"
+  },
+  "inlet_port_boss_top_r_m": {
+    "value": 0.0401,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0401 (was 0.0328; 1200 N, 8 in body 2026-11-05). 0.0328 (was 0.031; 575 N refit 2026-11-04). Port boss flat top, radius from axis. 31 mm (was 30; 410 N refit 2026-11-03): 2 mm between the -4 ORB port bottom and the passage"
+  },
+  "inlet_manifold_area_mm2": {
+    "value": 65.65350252394752,
+    "unit": "mm^2",
+    "source": "chamber_hardware.py"
+  },
+  "outlet_manifold_area_mm2": {
+    "value": 23.05748231999996,
+    "unit": "mm^2",
+    "source": "chamber_hardware.py"
+  },
+  "flange_separation_load_N": {
+    "value": 31895.583147796697,
+    "unit": "N",
+    "source": "chamber_hardware.py"
+  },
+  "flange_joint_SF": {
+    "value": 2.5910797622682415,
+    "unit": "-",
+    "source": "chamber_hardware.py"
+  },
+  "flange_bending_stress_Pa": {
+    "value": 61681590.500768214,
+    "unit": "Pa",
+    "source": "chamber_hardware.py"
+  },
+  "inlet_port_x_from_exit_m": {
+    "value": 0.011,
+    "unit": "m",
+    "source": "input",
+    "note": "Port boss centre this far upstream of the nozzle exit (boss must sit inside the collar)"
+  },
+  "inlet_passage_r_m": {
+    "value": 0.0263,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0263 (was 0.019; 1200 N, 8 in body 2026-11-05). 0.019 (was 0.017; 575 N refit 2026-11-04). Internal axial passage (port -> inlet manifold), centre radius. 17 mm (was 14; 410 N refit 2026-11-03): 1.6 mm metal to the jacket at the worst point of the run"
+  },
+  "inlet_passage_d_m": {
+    "value": 0.004,
+    "unit": "m",
+    "source": "input",
+    "note": "Internal passage diameter"
+  },
+  "L_gas_total_mm": {
+    "value": 136.1440764610663,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "L_throat_flat_mm": {
+    "value": 7.7701114220852645,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "x_throat_mm": {
+    "value": 98.97791910484169,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "R_up_mm": {
+    "value": 17.270755727921458,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "R_down_mm": {
+    "value": 4.6055348607790565,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "injector_material": {
+    "value": "316L stainless, metal 3D print (L-PBF)",
+    "unit": "-",
+    "source": "input",
+    "note": "Holes under 1 mm, ports and sealing faces are drilled/machined after printing"
+  },
+  "injector_yield_Pa": {
+    "value": 300000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "Printed + stress-relieved 316L yield (placeholder, confirm with the print service)"
+  },
+  "pintle_yield_Pa": {
+    "value": 205000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "316 stainless bar, annealed (pintle is machined on the lathe)"
+  },
+  "injector_safety_factor": {
+    "value": 2,
+    "unit": "-",
+    "source": "input",
+    "note": "On yield, worst static case: tank pressure in every passage, chamber empty"
+  },
+  "inj_flange_thickness_m": {
+    "value": 0.009,
+    "unit": "m",
+    "source": "input",
+    "note": "Injector flange (outside the hub), axial thickness. 9 mm: ring bending needs >= 8.1 mm"
+  },
+  "inj_hub_thickness_m": {
+    "value": 0.022,
+    "unit": "m",
+    "source": "input",
+    "note": "0.022 (was 0.018; 1200 N, 8 in body 2026-11-05). Injector hub, face to back face. Deep enough for the -4 ORB ports above the internal passages"
+  },
+  "inj_hub_outer_r_m": {
+    "value": 0.0682,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0682 (was 0.0505; 1200 N, 8 in body 2026-11-05). 0.0505 (was 0.044; 575 N refit 2026-11-04). Hub radius: covers the back-face ports and their spotfaces. 44 mm (was 38; 410 N refit 2026-11-03): the ethanol inlet spotface at r 31.65 now fits with 1.85 mm to spare. Cap screw heads go on the injector "
+  },
+  "face_plate_m": {
+    "value": 0.0016,
+    "unit": "m",
+    "source": "input",
+    "note": "Metal between the face and the manifolds = length of the small drilled holes (L/D ~5 max for micro drills)"
+  },
+  "core_manifold_wall_m": {
+    "value": 0.0006,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0006 (was 0.0004; 1200 N, 8 in body 2026-11-05). Metal between the pintle bore and the core ethanol manifold"
+  },
+  "core_manifold_width_m": {
+    "value": 0.0016,
+    "unit": "m",
+    "source": "input",
+    "note": "Core ethanol manifold radial width"
+  },
+  "film_manifold_width_m": {
+    "value": 0.0015,
+    "unit": "m",
+    "source": "input",
+    "note": "Film manifold radial width"
+  },
+  "film_manifold_height_m": {
+    "value": 0.0028,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0028 (was 0.00145; 1200 N, 8 in body 2026-11-05). 0.00145 (was 0.001; 575 N refit 2026-11-04). Film manifold axial height"
+  },
+  "film_restrictor_len_m": {
+    "value": 0.0009,
+    "unit": "m",
+    "source": "input",
+    "note": "Metal between the feed passage and the film manifold = restrictor hole length"
+  },
+  "n_feed_passages": {
+    "value": 3,
+    "unit": "-",
+    "source": "input",
+    "note": "Radial passages, fuel ring -> core manifold (clock 0/120/240)"
+  },
+  "feed_passage_d_m": {
+    "value": 0.003,
+    "unit": "m",
+    "source": "input",
+    "note": "0.003 (was 0.0025; 1200 N, 8 in body 2026-11-05). Feed passage diameter"
+  },
+  "orb4_tap_drill_d_m": {
+    "value": 0.009906,
+    "unit": "m",
+    "source": "input",
+    "note": "-4 ORB (7/16-20 UNF) tap drill 0.390 in; finish with a -4 porting tool"
+  },
+  "orb4_tap_depth_m": {
+    "value": 0.0105,
+    "unit": "m",
+    "source": "input",
+    "note": "-4 ORB port depth"
+  },
+  "orb4_spotface_d_m": {
+    "value": 0.021,
+    "unit": "m",
+    "source": "input",
+    "note": "-4 ORB flat sealing area (~0.83 in)"
+  },
+  "orb4_hex_corner_r_m": {
+    "value": 0.00825,
+    "unit": "m",
+    "source": "input",
+    "note": "-4 fitting hex (9/16 in) corner radius, for spacing ports"
+  },
+  "orb6_tap_drill_d_m": {
+    "value": 0.0131,
+    "unit": "m",
+    "source": "input",
+    "note": "-6 ORB (9/16-18 UNF) tap drill 33/64 in; finish with a -6 porting tool"
+  },
+  "orb6_tap_depth_m": {
+    "value": 0.0135,
+    "unit": "m",
+    "source": "input",
+    "note": "-6 ORB port depth"
+  },
+  "orb6_spotface_d_m": {
+    "value": 0.025,
+    "unit": "m",
+    "source": "input",
+    "note": "-6 ORB flat sealing area (~0.98 in). Sets the pintle head diameter"
+  },
+  "igniter_port_r_m": {
+    "value": 0.0228,
+    "unit": "m",
+    "source": "input",
+    "note": "Torch igniter -4 ORB port on the back face, flame passage straight to the face"
+  },
+  "igniter_clock_deg": {
+    "value": 180,
+    "unit": "deg",
+    "source": "input",
+    "note": "Igniter position around the axis"
+  },
+  "igniter_passage_d_m": {
+    "value": 0.003,
+    "unit": "m",
+    "source": "input",
+    "note": "Igniter flame passage (placeholder until the igniter is designed)"
+  },
+  "pc_tap_r_m": {
+    "value": 0.0228,
+    "unit": "m",
+    "source": "input",
+    "note": "Chamber pressure tap -4 ORB port on the back face"
+  },
+  "pc_tap_clock_deg": {
+    "value": 228,
+    "unit": "deg",
+    "source": "input",
+    "note": "228 (was 132; the real port in Injector_Body. Changed 2026-11-06, no CAD change). Pc tap position around the axis (clear of the igniter fitting and the pintle ears)"
+  },
+  "pc_tap_passage_d_m": {
+    "value": 0.0015,
+    "unit": "m",
+    "source": "input",
+    "note": "Pc tap passage"
+  },
+  "pintle_bore_d_m": {
+    "value": 0.0125,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0125 (was 0.008; 1200 N, 8 in body 2026-11-05). 0.008 (was 0.007; 575 N refit 2026-11-04). Nitrous bore inside the pintle. 7.0 mm (was 6.0; widened 2026-11-03 for the 410 N engine so the 8 nitrous holes don't merge at the bore)"
+  },
+  "pintle_tip_wall_m": {
+    "value": 0.0016,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0016 (was 0.0011; 1200 N, 8 in body 2026-11-05). 0.0011 (was 0.001; 575 N refit 2026-11-04). Closed end wall of the pintle past the nitrous holes"
+  },
+  "pintle_head_len_m": {
+    "value": 0.02,
+    "unit": "m",
+    "source": "input",
+    "note": "Pintle head above the injector back face, holds the -6 ORB nitrous port"
+  },
+  "pintle_ear_thickness_m": {
+    "value": 0.005,
+    "unit": "m",
+    "source": "input",
+    "note": "Pintle mounting ears, axial thickness"
+  },
+  "pintle_ear_width_m": {
+    "value": 0.01,
+    "unit": "m",
+    "source": "input",
+    "note": "Pintle mounting ears, width"
+  },
+  "pintle_bolt_r_m": {
+    "value": 0.019,
+    "unit": "m",
+    "source": "input",
+    "note": "0.019 (was 0.0165; 1200 N, 8 in body 2026-11-05). 2 x M4 at clock 90/270: hold the pintle and fix its clocking (N2O jets line up with the ethanol holes)"
+  },
+  "pintle_bolt_clearance_d_m": {
+    "value": 0.0045,
+    "unit": "m",
+    "source": "input",
+    "note": "M4 clearance hole"
+  },
+  "pintle_bolt_tap_drill_d_m": {
+    "value": 0.0033,
+    "unit": "m",
+    "source": "input",
+    "note": "M4 tap drill"
+  },
+  "pintle_bolt_tap_depth_m": {
+    "value": 0.01,
+    "unit": "m",
+    "source": "input",
+    "note": "M4 tapped hole depth in the injector back face"
+  },
+  "pintle_bolt_stress_area_m2": {
+    "value": 8.78e-06,
+    "unit": "m^2",
+    "source": "input",
+    "note": "M4 tensile stress area (class 12.9, same proof strength as the flange bolts)"
+  },
+  "pintle_seal_groove_id_m": {
+    "value": 0.0224,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0224 (was 0.016; 1200 N, 8 in body 2026-11-05). 0.016 (was 0.0144; 575 N refit 2026-11-04). AS568-016 face seal under the pintle (stops chamber gas leaking out along the pintle). Groove ID 14.4 mm (was 11.2 for AS568-014, which cut into the 11.22 mm pintle bore after the 410 N resize): 1.6 mm land"
+  },
+  "pintle_seal_groove_od_m": {
+    "value": 0.0272,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0272 (was 0.0208; 1200 N, 8 in body 2026-11-05). 0.0208 (was 0.0192; 575 N refit 2026-11-04). Pintle face seal groove OD. 19.2 mm = AS568-016 ring OD (internal pressure pushes the ring out to the groove OD)"
+  },
+  "pintle_seal_groove_depth_m": {
+    "value": 0.0013,
+    "unit": "m",
+    "source": "input",
+    "note": "Pintle face seal groove depth (0.070 in cross-section, ~25% squeeze)"
+  },
+  "inj_depth_cavity_mm": {
+    "value": 8.3,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "inj_depth_feed_mm": {
+    "value": 6.800000000000001,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "core_manifold_r_in_mm": {
+    "value": 10.1948642932897,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "core_manifold_r_out_mm": {
+    "value": 11.7948642932897,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "r_eth_hole_circle_mm": {
+    "value": 10.598704711922531,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "film_manifold_r_in_mm": {
+    "value": 54.8191857597382,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "film_manifold_r_out_mm": {
+    "value": 56.3191857597382,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "pintle_bore_end_x_mm": {
+    "value": 20.971167625859405,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "pintle_ear_r_mm": {
+    "value": 23.25,
+    "unit": "mm",
+    "source": "injector_hardware.py"
+  },
+  "inj_flange_stress_Pa": {
+    "value": 76150111.72934349,
+    "unit": "Pa",
+    "source": "injector_hardware.py"
+  },
+  "pintle_joint_SF": {
+    "value": 2.898798188407667,
+    "unit": "-",
+    "source": "injector_hardware.py"
+  },
+  "max_wall_T_print_error_K": {
+    "value": 789.4032280026005,
+    "unit": "K",
+    "source": "heat_transfer.py"
+  },
+  "helix_angle_throat_deg": {
+    "value": 39.0,
+    "unit": "deg",
+    "source": "heat_transfer.py"
+  },
+  "helix_angle_peak_deg": {
+    "value": 54.0,
+    "unit": "deg",
+    "source": "heat_transfer.py"
+  },
+  "x_helix_start_mm": {
+    "value": 87.00000000000001,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "channel_twist_deg": {
+    "value": 152.26081179062788,
+    "unit": "deg",
+    "source": "heat_transfer.py"
+  },
+  "channel_length_mm": {
+    "value": 173.99680836520884,
+    "unit": "mm",
+    "source": "heat_transfer.py"
+  },
+  "x_outlet_manifold_top_mm": {
+    "value": 10.290799999999992,
+    "unit": "mm",
+    "source": "chamber_hardware.py"
+  },
+  "x_inlet_manifold_floor_mm": {
+    "value": 123.6440764610663,
+    "unit": "mm",
+    "source": "chamber_hardware.py"
+  },
+  "x_channel_start_mm": {
+    "value": 4.0,
+    "unit": "mm",
+    "source": "chamber_hardware.py"
+  },
+  "x_channel_end_mm": {
+    "value": 134.6440764610663,
+    "unit": "mm",
+    "source": "chamber_hardware.py"
+  },
+  "T_N2O_max_K": {
+    "value": 298.15,
+    "unit": "K",
+    "source": "input",
+    "note": "Hottest nitrous allowed in the tank (25 C: shade, chill, fill late)"
+  },
+  "N2O_subcool_margin_psi": {
+    "value": 100,
+    "unit": "psi",
+    "source": "input",
+    "note": "Nitrous must stay this far above its boiling pressure all the way to the throttle valve"
+  },
+  "ox_line_od_m": {
+    "value": 0.0127,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0127 (was 0.0127; 1200 N, 8 in body 2026-11-05). Nitrous line: 1/2 in 316 stainless tube (was 3/8; upsized 2026-11-03 for the 410 N flow, 3/8 ran 4.4 m/s)"
+  },
+  "ox_line_wall_m": {
+    "value": 0.000889,
+    "unit": "m",
+    "source": "input",
+    "note": "Nitrous line wall, 0.035 in"
+  },
+  "fu_line_od_m": {
+    "value": 0.009525,
+    "unit": "m",
+    "source": "input",
+    "note": "0.009525 (was 0.009525; 1200 N, 8 in body 2026-11-05). 0.009525 (was 0.00635; 575 N refit 2026-11-04). Ethanol line: 1/4 in 316 stainless tube"
+  },
+  "fu_line_wall_m": {
+    "value": 0.000889,
+    "unit": "m",
+    "source": "input",
+    "note": "Ethanol line wall, 0.035 in"
+  },
+  "ox_line_length_m": {
+    "value": 0.6,
+    "unit": "m",
+    "source": "input",
+    "note": "Tank outlet to the flex hose, not counting the hose (placeholder until the vehicle layout)"
+  },
+  "fu_line_length_m": {
+    "value": 2.6,
+    "unit": "m",
+    "source": "input",
+    "note": "2.6 (was 0.5; real run down the annulus)"
+  },
+  "ox_fittings_K": {
+    "value": 3.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Loss coefficients added up: tank outlet, bends, tees (placeholder)"
+  },
+  "fu_fittings_K": {
+    "value": 3.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Loss coefficients added up: tank outlet, bends, tees (placeholder)"
+  },
+  "tube_roughness_m": {
+    "value": 1.5e-06,
+    "unit": "m",
+    "source": "input",
+    "note": "Drawn stainless tube inside roughness"
+  },
+  "tube_uts_Pa": {
+    "value": 515000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "316 stainless annealed seamless tube, tensile strength"
+  },
+  "tube_design_factor": {
+    "value": 4,
+    "unit": "-",
+    "source": "input",
+    "note": "Tube working pressure = burst pressure / this (fitting makers use 4)"
+  },
+  "line_velocity_max_mps": {
+    "value": 4.0,
+    "unit": "m/s",
+    "source": "input",
+    "note": "Keep liquid line speed below this (fast flow drops pressure; nitrous could start boiling)"
+  },
+  "ox_line_velocity_max_mps": {
+    "value": 6.5,
+    "unit": "m/s",
+    "source": "input",
+    "note": "Exception for the nitrous line only, accepted 2026-11-05: 6.49 m/s in the 1/2 in stubs, 4.80 m/s in the -10 hose. line_velocity_max_mps stays the limit for every other line"
+  },
+  "ox_hose_id_m": {
+    "value": 0.0127,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0127 (was 0.0102; 1200 N, 8 in body 2026-11-05). Nitrous flex hose: -8 PTFE-lined stainless braid, smooth bore, ~0.40 in ID (was -6; check the maker's ID)"
+  },
+  "fu_hose_id_m": {
+    "value": 0.0079,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0079 (was 0.0079; 1200 N, 8 in body 2026-11-05). 0.0079 (was 0.0048; 575 N refit 2026-11-04). Ethanol flex hose: -4 PTFE-lined stainless braid, smooth bore"
+  },
+  "hose_length_m": {
+    "value": 0.3,
+    "unit": "m",
+    "source": "input",
+    "note": "Flex hose length, long enough for the gimbal swing (placeholder)"
+  },
+  "hose_K": {
+    "value": 1.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Hose end fittings loss coefficient (placeholder)"
+  },
+  "filter_rating_um": {
+    "value": 40,
+    "unit": "um",
+    "source": "input",
+    "note": "Inline filter rating, well under the smallest injector hole"
+  },
+  "ox_filter_Cv": {
+    "value": 1.5,
+    "unit": "-",
+    "source": "input",
+    "note": "1.5 (was 1.0; 1200 N, 8 in body 2026-11-05). Nitrous inline filter flow coefficient (placeholder until a filter is picked)"
+  },
+  "fu_filter_Cv": {
+    "value": 1.0,
+    "unit": "-",
+    "source": "input",
+    "note": "1 (was 0.7; 1200 N, 8 in body 2026-11-05). Ethanol inline filter flow coefficient (placeholder until a filter is picked)"
+  },
+  "ox_main_valve_Cv": {
+    "value": 1.1,
+    "unit": "-",
+    "source": "input",
+    "note": "1.1 (was 2.4; 1200 N, 8 in body 2026-11-05). Main nitrous valve: 3/8 in full-port servo ball valve (placeholder, check the datasheet)"
+  },
+  "fu_main_valve_Cv": {
+    "value": 1.5,
+    "unit": "-",
+    "source": "input",
+    "note": "1.5 (was 0.6; 1200 N, 8 in body 2026-11-05). Main ethanol valve: 1/4 in servo ball valve (placeholder, check the datasheet)"
+  },
+  "throttle_min": {
+    "value": 0.4,
+    "unit": "-",
+    "source": "input",
+    "note": "Lowest thrust the throttle must reach, fraction of full (placeholder)"
+  },
+  "regulator_Cv": {
+    "value": 0.2,
+    "unit": "-",
+    "source": "input",
+    "note": "0.2 (was 0.1; 1200 N, 8 in body 2026-11-05). Helium regulator flow coefficient (placeholder until a regulator is picked)"
+  },
+  "He_tank_gas_T_K": {
+    "value": 250,
+    "unit": "K",
+    "source": "input",
+    "note": "Helium temperature in the tanks; expansion cools it, colder needs more helium (placeholder)"
+  },
+  "relief_set_psi": {
+    "value": 1250,
+    "unit": "psi",
+    "source": "input",
+    "note": "Relief valves start to open here"
+  },
+  "relief_accumulation": {
+    "value": 1.1,
+    "unit": "-",
+    "source": "input",
+    "note": "Relief valves reach full flow this many times their set pressure"
+  },
+  "tank_proof_factor": {
+    "value": 1.5,
+    "unit": "-",
+    "source": "input",
+    "note": "Tanks are proof-tested at this times their operating pressure"
+  },
+  "bulkhead_bolt_d_m": {
+    "value": 0.00635,
+    "unit": "m",
+    "source": "input",
+    "note": "Tank end-cap radial screws: 1/4-20 socket head cap screws (12 x #10 was too weak in bearing)"
+  },
+  "bulkhead_n_bolts": {
+    "value": 24,
+    "unit": "-",
+    "source": "input",
+    "note": "24 (was 16; 1200 N, 8 in body 2026-11-05). Radial screws per end cap"
+  },
+  "bulkhead_bolt_shear_Pa": {
+    "value": 650000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "Alloy steel socket head cap screw shear strength (about 0.6 x tensile)"
+  },
+  "bulkhead_bolt_edge_m": {
+    "value": 0.0127,
+    "unit": "m",
+    "source": "input",
+    "note": "Screw centre to the tube end (2 x diameter)"
+  },
+  "ox_feed_dP_psi": {
+    "value": 103.74336906812324,
+    "unit": "psi",
+    "source": "feed_system.py"
+  },
+  "fu_feed_dP_psi": {
+    "value": 19.096502867629983,
+    "unit": "psi",
+    "source": "feed_system.py"
+  },
+  "ox_throttle_Cv_max": {
+    "value": 0.4658471017409137,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "ox_throttle_Cv_min": {
+    "value": 0.17003530157131172,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "fu_throttle_Cv_max": {
+    "value": 0.29508357419880765,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "fu_throttle_Cv_min": {
+    "value": 0.041761498339138656,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "hover_throttle_liftoff": {
+    "value": 0.7282542372473845,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "hover_throttle_landing": {
+    "value": 0.573434551858893,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "P_jacket_out_hover_landing_psi": {
+    "value": 1055.3701504710323,
+    "unit": "psi",
+    "source": "feed_system.py"
+  },
+  "He_flow_scfm": {
+    "value": 137.07971053664127,
+    "unit": "SCFM",
+    "source": "feed_system.py"
+  },
+  "regulator_Cv_needed": {
+    "value": 0.13105755715927075,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "relief_Cv_needed": {
+    "value": 0.6545454545454548,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "tank_cap_thickness_mm": {
+    "value": 20.02397966200062,
+    "unit": "mm",
+    "source": "feed_system.py"
+  },
+  "tank_cap_mass_kg": {
+    "value": 1.1264395301502772,
+    "unit": "kg",
+    "source": "feed_system.py"
+  },
+  "tank_cap_screw_SF": {
+    "value": 2.164235094807941,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "fuel_ring_d_m": {
+    "value": 0.1198,
+    "unit": "m",
+    "source": "input",
+    "note": "0.1198 (was 0.0846; 1200 N, 8 in body 2026-11-05). 0.0846 (was 0.072; 575 N refit 2026-11-04). Injector internal ring joining the 3 feed passages at their outer ends, centre diameter"
+  },
+  "fuel_ring_width_m": {
+    "value": 0.0025,
+    "unit": "m",
+    "source": "input",
+    "note": "Injector internal fuel ring width"
+  },
+  "outlet_port": {
+    "value": "-4 ORB (7/16-20 UNF, SAE J1926)",
+    "unit": "-",
+    "source": "input",
+    "note": "Chamber coolant outlet port: hot ethanol out to the fuel throttle valve"
+  },
+  "outlet_port_x_m": {
+    "value": 0.02,
+    "unit": "m",
+    "source": "input",
+    "note": "Outlet port boss centre, from the injector face (boss bottom edge 1 mm into the flange, clear of the manifold roof)"
+  },
+  "outlet_port_boss_d_m": {
+    "value": 0.022,
+    "unit": "m",
+    "source": "input",
+    "note": "Outlet port boss diameter (covers the 21 mm -4 ORB spotface)"
+  },
+  "outlet_port_boss_top_r_m": {
+    "value": 0.0796,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0796 (was 0.0612; 1200 N, 8 in body 2026-11-05). 0.0612 (was 0.055; 575 N refit 2026-11-04). Outlet port boss flat top, radius from axis. 55 mm (was 49; 410 N refit 2026-11-03): keeps 1.75 mm between the -4 ORB port bottom and the passage"
+  },
+  "outlet_passage_r_m": {
+    "value": 0.06535,
+    "unit": "m",
+    "source": "input",
+    "note": "0.06535 (was 0.04695; 1200 N, 8 in body 2026-11-05). 0.04695 (was 0.04075; 575 N refit 2026-11-04). Internal axial passage (outlet manifold -> port), centre radius. 40.75 mm (was 35; 410 N refit 2026-11-03): 1.3 mm metal above the rib tops"
+  },
+  "outlet_passage_d_m": {
+    "value": 0.004,
+    "unit": "m",
+    "source": "input",
+    "note": "Outlet internal passage diameter"
+  },
+  "fu_engine_loop_length_m": {
+    "value": 0.35,
+    "unit": "m",
+    "source": "input",
+    "note": "Tube from the chamber outlet port, over the flanges, to the fuel throttle valve on the injector inlet (placeholder)"
+  },
+  "fu_engine_loop_K": {
+    "value": 3.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Outlet port, bends, valve fittings in the engine loop (placeholder)"
+  },
+  "throttle_valve_FL": {
+    "value": 0.9,
+    "unit": "-",
+    "source": "input",
+    "note": "Needle valve liquid pressure recovery factor: sets the drop where boiling at the seat chokes the flow (placeholder)"
+  },
+  "bolt_head_d_m": {
+    "value": 0.0092,
+    "unit": "m",
+    "source": "input",
+    "note": "M5 nut across corners / cap screw head (8.5): widest part at the flange back face, for clearance checks"
+  },
+  "rho_ox_manifold": {
+    "value": 176.91241166033353,
+    "unit": "kg/m^3",
+    "source": "injector.py"
+  },
+  "x_ox_manifold": {
+    "value": 0.31100062008495305,
+    "unit": "-",
+    "source": "injector.py"
+  },
+  "x_fu_injector_hover_landing": {
+    "value": 0.0,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "x_ox_injector_full": {
+    "value": 0.3033476741317226,
+    "unit": "-",
+    "source": "feed_system.py"
+  },
+  "thrust_to_weight_liftoff": {
+    "value": 1.3731468336933341,
+    "unit": "-",
+    "source": "massIteration.py"
+  },
+  "throttle_landing_light": {
+    "value": 0.4936500053133444,
+    "unit": "-",
+    "source": "massIteration.py"
+  },
+  "m_engine_cad_kg": {
+    "value": 6.577521758187966,
+    "unit": "kg",
+    "source": "CAD",
+    "note": "5.8 (was 3.280588455602244; 1200 N, 8 in body 2026-11-05). "
+  },
+  "m_chamber_cad_kg": {
+    "value": 3.585027570524998,
+    "unit": "kg",
+    "source": "CAD"
+  },
+  "m_injector_cad_kg": {
+    "value": 2.868809806299358,
+    "unit": "kg",
+    "source": "CAD"
+  },
+  "m_pintle_cad_kg": {
+    "value": 0.12368438136360879,
+    "unit": "kg",
+    "source": "CAD"
+  },
+  "x_engine_cg_mm": {
+    "value": 23.371076535248317,
+    "unit": "mm",
+    "source": "CAD",
+    "note": "-62 (was 13.65216117735948; 1200 N, 8 in body 2026-11-05). "
+  },
+  "body_od_m": {
+    "value": 0.2033,
+    "unit": "m",
+    "source": "input",
+    "note": "0.2033 (was 0.15672; 1200 N, 8 in body 2026-11-05). Body tube: Wildman G12 fiberglass 6.0 (ID 6.00 in, OD 6.17 in; fits the 5.4 in helium bottle; radio-transparent). Chosen 2026-11-03"
+  },
+  "body_tube_kg_per_m": {
+    "value": 2.8,
+    "unit": "kg/m",
+    "source": "input",
+    "note": "2.8 (was 1.1; 1200 N, 8 in body 2026-11-05). G12 6.0 mass per length: ~1.1 kg/m, scaled from Wildman's listed 8 in G12 weight (6 in weight not listed: confirm with Wildman)"
+  },
+  "avionics_bay_len_m": {
+    "value": 0.15,
+    "unit": "m",
+    "source": "input",
+    "note": "0.15 (was 0.15; 1200 N, 8 in body 2026-11-05). Avionics bay length at the top (placeholder)"
+  },
+  "He_bottle_len_m": {
+    "value": 1.212,
+    "unit": "m",
+    "source": "input",
+    "note": "1.212 (was 1.192; 2 L66P in line, 516 mm each, 180 mm between for the upper adapter, regulator and outlet line)"
+  },
+  "He_valve_stack_len_m": {
+    "value": 0.24,
+    "unit": "m",
+    "source": "input",
+    "note": "0.24 (was 0.08; 1200 N, 8 in body 2026-11-05). Bottle valve/adapter + regulator stack under the bottle (placeholder)"
+  },
+  "engine_bay_len_m": {
+    "value": 0.7311440764610663,
+    "unit": "m",
+    "source": "input",
+    "note": "Nozzle exit to the nitrous tank's bottom, less a section gap: from plumbing_layout.py's real stack"
+  },
+  "section_gap_m": {
+    "value": 0.03,
+    "unit": "m",
+    "source": "input",
+    "note": "Gap between stacked sections for mounts and lines (placeholder)"
+  },
+  "gimbal_pivot_above_face_m": {
+    "value": 0.048,
+    "unit": "m",
+    "source": "input",
+    "note": "0.048 (was 0.042; 1200 N, 8 in body 2026-11-05). 0.042 (was 0.035; 575 N refit 2026-11-04). Gimbal pivot height above the injector face: ring sits just above the injector (chosen 2026-11-04). 35 mm leaves room for the ethanol tube to cross under the ring at full tilt"
+  },
+  "leg_cg_below_exit_m": {
+    "value": -0.405,
+    "unit": "m",
+    "source": "input",
+    "note": "-0.405 (was 0.1, a placeholder; changed 2026-11-06). Landing legs' center of mass below the nozzle exit, so negative is above it. Calculated from the built parts with the legs open, the worst case for the gimbal. Folded it's 0.327 m above"
+  },
+  "leg_ring_u_mm": {
+    "value": 896.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Reused Tank_Ring that the leg hinge brackets bolt through, above the injector face. Approved 2026-11-05"
+  },
+  "leg_pin_below_ring_mm": {
+    "value": 40.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Hinge pin below the ring, so the strut's load line meets the wall at the ring"
+  },
+  "leg_pin_r_mm": {
+    "value": 125.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Hinge pin's radius from the rocket's axis"
+  },
+  "leg_foot_r_mm": {
+    "value": 850.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Foot's radius, open: 1.7 m foot span, picked 2026-11-05"
+  },
+  "leg_pad_below_exit_mm": {
+    "value": 300.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Foot pad's bottom below the nozzle exit, open. 161 mm of foot travel still leaves about 140 mm"
+  },
+  "leg_folded_foot_r_mm": {
+    "value": 240.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Foot's radius, folded: clears the flame edge at full tilt (rough estimate)"
+  },
+  "leg_crush_force_N": {
+    "value": 1250.0,
+    "unit": "N",
+    "source": "input",
+    "note": "Crush cartridge force in the strut, about 4.2 g at landing. Picked 2026-11-05. Set by the honeycomb grade, not modeled"
+  },
+  "leg_tube_od_mm": {
+    "value": 30.0,
+    "unit": "mm",
+    "source": "input",
+    "note": "Roll-wrapped carbon tube, Easy Composites 30 x 27 mm, 214 g/m, 80 C maximum"
+  },
+  "leg_tube_id_mm": {
+    "value": 27.0,
+    "unit": "mm",
+    "source": "input"
+  },
+  "L_vehicle_m": {
+    "value": 4.556736854841842,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "body_tube_mass_kg": {
+    "value": 12.29645977946617,
+    "unit": "kg",
+    "source": "vehicle_layout.py"
+  },
+  "x_cg_liftoff_m": {
+    "value": 1.8815998958421816,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "x_cg_landing_m": {
+    "value": 1.9291590185154015,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "x_gimbal_pivot_m": {
+    "value": 0.1841440764610663,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "gimbal_arm_liftoff_m": {
+    "value": 1.6974558193811153,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "gimbal_arm_landing_m": {
+    "value": 1.7450149420543353,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "I_pitch_liftoff_kgm2": {
+    "value": 121.03888137762165,
+    "unit": "kg*m^2",
+    "source": "vehicle_layout.py"
+  },
+  "I_pitch_landing_kgm2": {
+    "value": 111.87123657083907,
+    "unit": "kg*m^2",
+    "source": "vehicle_layout.py"
+  },
+  "L_body_tube_m": {
+    "value": 4.391592778380775,
+    "unit": "m",
+    "source": "massIteration.py"
+  },
+  "m_body_tube_kg": {
+    "value": 12.29645977946617,
+    "unit": "kg",
+    "source": "massIteration.py"
+  },
+  "engine_cg_off_axis_mm": {
+    "value": 0.5335490749597863,
+    "unit": "mm",
+    "source": "CAD"
+  },
+  "I_engine_face_kgm2": {
+    "value": 0.025155137622193808,
+    "unit": "kg*m^2",
+    "source": "CAD",
+    "note": "0.07 (was 0.006283174842404957; 1200 N, 8 in body 2026-11-05). "
+  },
+  "gust_mps": {
+    "value": 10.0,
+    "unit": "m/s",
+    "source": "input",
+    "note": "Side gust the gimbal must hold the vehicle against at hover (design criterion, 2026-11-03)"
+  },
+  "Cd_side": {
+    "value": 1.2,
+    "unit": "-",
+    "source": "input",
+    "note": "Drag coefficient of the body side-on (cylinder in crossflow, placeholder)"
+  },
+  "air_density_kgm3": {
+    "value": 1.2,
+    "unit": "kg/m^3",
+    "source": "input",
+    "note": "Air density at the flight site (placeholder: near sea level)"
+  },
+  "thrust_misalign_deg": {
+    "value": 0.5,
+    "unit": "deg",
+    "source": "input",
+    "note": "Engine thrust line misalignment to allow for (build tolerance, design criterion)"
+  },
+  "cg_offset_m": {
+    "value": 0.005,
+    "unit": "m",
+    "source": "input",
+    "note": "Vehicle CG off the axis to allow for (design criterion)"
+  },
+  "maneuver_accel_dps2": {
+    "value": 20.0,
+    "unit": "deg/s^2",
+    "source": "input",
+    "note": "Rotation the gimbal must be able to command on top of the disturbances (design criterion)"
+  },
+  "gimbal_range_deg": {
+    "value": 8.0,
+    "unit": "deg",
+    "source": "input",
+    "note": "Mechanical gimbal range each way. 8 deg (was 5; chosen 2026-11-04): half of it covers the 3.5 deg worst case"
+  },
+  "gimbal_use_max": {
+    "value": 0.5,
+    "unit": "-",
+    "source": "input",
+    "note": "Fraction of the range normal flying (all criteria at once) may use"
+  },
+  "actuator_bandwidth_hz": {
+    "value": 5.0,
+    "unit": "Hz",
+    "source": "input",
+    "note": "Gimbal must follow commands this fast (~5x a ~1 Hz attitude loop; placeholder)"
+  },
+  "actuator_margin": {
+    "value": 2.0,
+    "unit": "-",
+    "source": "input",
+    "note": "Servo torque margin over the worst required torque"
+  },
+  "servo_torque_Nm": {
+    "value": 4.9,
+    "unit": "N*m",
+    "source": "input",
+    "note": "Savox SB-2290SG at 7.4 V: 50-55 kg-cm listed, lower value used"
+  },
+  "servo_speed_dps": {
+    "value": 461.0,
+    "unit": "deg/s",
+    "source": "input",
+    "note": "Savox SB-2290SG at 7.4 V: 0.13 s / 60 deg"
+  },
+  "servo_travel_max_deg": {
+    "value": 60.0,
+    "unit": "deg",
+    "source": "input",
+    "note": "Most servo arm swing each way the linkage may use"
+  },
+  "hose_stiffness_Nm_per_deg": {
+    "value": 0.2,
+    "unit": "N*m/deg",
+    "source": "input",
+    "note": "Bending stiffness of both pressurized flex hoses at the gimbal (placeholder: measure on the test stand)"
+  },
+  "gimbal_friction_Nm": {
+    "value": 0.2,
+    "unit": "N*m",
+    "source": "input",
+    "note": "Gimbal bearing friction (placeholder)"
+  },
+  "pivot_offset_m": {
+    "value": 0.0005,
+    "unit": "m",
+    "source": "input",
+    "note": "Thrust line to gimbal pivot misalignment (build tolerance)"
+  },
+  "gimbal_angle_needed_deg": {
+    "value": 3.8322863244596026,
+    "unit": "deg",
+    "source": "gimbal.py"
+  },
+  "gimbal_moving_mass_kg": {
+    "value": 8.139276794713686,
+    "unit": "kg",
+    "source": "gimbal.py"
+  },
+  "I_gimbal_pivot_kgm2": {
+    "value": 0.05717436630291323,
+    "unit": "kg*m^2",
+    "source": "gimbal.py"
+  },
+  "gimbal_torque_needed_Nm": {
+    "value": 7.008347415517784,
+    "unit": "N*m",
+    "source": "gimbal.py"
+  },
+  "gimbal_rate_needed_dps": {
+    "value": 125.66370614359172,
+    "unit": "deg/s",
+    "source": "gimbal.py"
+  },
+  "servo_ratio": {
+    "value": 3.17,
+    "unit": "-",
+    "source": "gimbal.py"
+  },
+  "gimbal_ring_id_m": {
+    "value": 0.16,
+    "unit": "m",
+    "source": "input",
+    "note": "0.16 (was 0.12; 1200 N, 8 in body 2026-11-05). 0.12 (was 0.116; 575 N refit 2026-11-04). Gimbal ring inside diameter: clears the 114 mm flange and the arms"
+  },
+  "gimbal_ring_od_m": {
+    "value": 0.18,
+    "unit": "m",
+    "source": "input",
+    "note": "0.18 (was 0.136; 1200 N, 8 in body 2026-11-05). 0.136 (was 0.132; 575 N refit 2026-11-04). Gimbal ring outside diameter"
+  },
+  "gimbal_ring_h_m": {
+    "value": 0.018,
+    "unit": "m",
+    "source": "input",
+    "note": "0.018 (was 0.014; 1200 N, 8 in body 2026-11-05). Gimbal ring height along the engine axis"
+  },
+  "gimbal_pin_d_m": {
+    "value": 0.006,
+    "unit": "m",
+    "source": "input",
+    "note": "Gimbal pivot pin diameter (4 pins)"
+  },
+  "gimbal_bush_od_m": {
+    "value": 0.008,
+    "unit": "m",
+    "source": "input",
+    "note": "Bushing outside diameter, pressed into the ring (bronze or PTFE-lined)"
+  },
+  "gimbal_mount_id_m": {
+    "value": 0.184,
+    "unit": "m",
+    "source": "input",
+    "note": "0.184 (was 0.14; 1200 N, 8 in body 2026-11-05). Mount ring inside diameter"
+  },
+  "gimbal_mount_od_m": {
+    "value": 0.1985,
+    "unit": "m",
+    "source": "input",
+    "note": "0.1985 (was 0.152; 1200 N, 8 in body 2026-11-05). Mount ring outside diameter: slip fit in the 6.00 in body tube"
+  },
+  "gimbal_mount_h_m": {
+    "value": 0.018,
+    "unit": "m",
+    "source": "input",
+    "note": "Mount ring height along the engine axis"
+  },
+  "gimbal_screw_n": {
+    "value": 8,
+    "unit": "-",
+    "source": "input",
+    "note": "Radial screws, mount ring to body tube"
+  },
+  "gimbal_screw_tap_d_m": {
+    "value": 0.0033,
+    "unit": "m",
+    "source": "input",
+    "note": "Radial screw tap drill (M4)"
+  },
+  "gimbal_screw_offset_m": {
+    "value": 0.006,
+    "unit": "m",
+    "source": "input",
+    "note": "Radial screw row, this far from the pin row toward the nozzle"
+  },
+  "gimbal_arm_foot_t_m": {
+    "value": 0.006,
+    "unit": "m",
+    "source": "input",
+    "note": "Arm foot thickness, on the injector flange (flange bolts get this much longer)"
+  },
+  "gimbal_arm_foot_r_in_m": {
+    "value": 0.0695,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0695 (was 0.0525; 1200 N, 8 in body 2026-11-05). 0.0525 (was 0.046; 575 N refit 2026-11-04). Arm foot inner radius (2 mm clear of the injector hub)"
+  },
+  "gimbal_arm_foot_r_out_m": {
+    "value": 0.0815,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0815 (was 0.0635; 1200 N, 8 in body 2026-11-05). 0.0635 (was 0.0565; 575 N refit 2026-11-04). Arm foot outer radius"
+  },
+  "gimbal_arm_foot_half_deg": {
+    "value": 30.0,
+    "unit": "deg",
+    "source": "input",
+    "note": "Arm foot half-span around the engine: covers two flange bolts"
+  },
+  "gimbal_arm_riser_r_in_m": {
+    "value": 0.069,
+    "unit": "m",
+    "source": "input",
+    "note": "0.069 (was 0.051; 1200 N, 8 in body 2026-11-05). 0.051 (was 0.048; 575 N refit 2026-11-04). Arm riser inner face"
+  },
+  "gimbal_arm_riser_r_out_m": {
+    "value": 0.076,
+    "unit": "m",
+    "source": "input",
+    "note": "0.076 (was 0.057; 1200 N, 8 in body 2026-11-05). 57 mm (was 55 at 410 N): the riser's lower corner must clear the ring's lower inside edge at full tilt"
+  },
+  "gimbal_arm_riser_w_m": {
+    "value": 0.016,
+    "unit": "m",
+    "source": "input",
+    "note": "Arm riser width"
+  },
+  "gimbal_arm_top_above_pivot_m": {
+    "value": 0.008,
+    "unit": "m",
+    "source": "input",
+    "note": "Arm riser top, this far above the pivot"
+  },
+  "gimbal_arm_tab_h_m": {
+    "value": 0.006,
+    "unit": "m",
+    "source": "input",
+    "note": "Pushrod tab height along the axis"
+  },
+  "gimbal_arm_tab_w_m": {
+    "value": 0.008,
+    "unit": "m",
+    "source": "input",
+    "note": "Pushrod tab width"
+  },
+  "gimbal_arm_tab_r_in_m": {
+    "value": 0.0574,
+    "unit": "m",
+    "source": "input",
+    "note": "6 mm inside the ball joint (was 0.038); 1200 N, 8 in body"
+  },
+  "gimbal_lever_r_m": {
+    "value": 0.0634,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0634 (was 0.041; 1200 N, 8 in body 2026-11-05). Pushrod ball joint on the arm tab, radius from the axis (lever arm of the servo)"
+  },
+  "gimbal_ball_tap_d_m": {
+    "value": 0.0025,
+    "unit": "m",
+    "source": "input",
+    "note": "Ball joint tap drill (M3)"
+  },
+  "gimbal_horn_r_m": {
+    "value": 0.02,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo horn radius"
+  },
+  "servo_L_m": {
+    "value": 0.0403,
+    "unit": "m",
+    "source": "input",
+    "note": "Savox SB-2290SG length"
+  },
+  "servo_W_m": {
+    "value": 0.0202,
+    "unit": "m",
+    "source": "input",
+    "note": "Savox SB-2290SG width"
+  },
+  "servo_H_m": {
+    "value": 0.0387,
+    "unit": "m",
+    "source": "input",
+    "note": "Savox SB-2290SG height"
+  },
+  "servo_tab_above_bottom_m": {
+    "value": 0.028,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo mounting tab above its bottom (typical standard servo: check on the real servo)"
+  },
+  "servo_hole_L_m": {
+    "value": 0.0495,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo mounting hole spacing along the length (standard: check on the real servo)"
+  },
+  "servo_hole_W_m": {
+    "value": 0.01,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo mounting hole spacing across the width (standard: check on the real servo)"
+  },
+  "servo_shaft_from_end_m": {
+    "value": 0.01005,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo shaft from the near end of the case (typical: check on the real servo)"
+  },
+  "gimbal_bracket_t_m": {
+    "value": 0.004,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo bracket web thickness"
+  },
+  "gimbal_bracket_r_in_m": {
+    "value": 0.0695,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0695 (was 0.047; 1200 N, 8 in body 2026-11-05). Servo bracket web inner edge"
+  },
+  "gimbal_bracket_r_web_m": {
+    "value": 0.0955,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0955 (was 0.073; 1200 N, 8 in body 2026-11-05). Servo bracket web outer edge, where the flange starts"
+  },
+  "gimbal_bracket_r_out_m": {
+    "value": 0.09905,
+    "unit": "m",
+    "source": "input",
+    "note": "0.09905 (was 0.0765; 1200 N, 8 in body 2026-11-05). Bracket flange is sketched out to here, then cut to the body tube's inside radius so it sits flush on the curved wall"
+  },
+  "gimbal_bracket_flange_w_m": {
+    "value": 0.02,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo bracket flange width"
+  },
+  "gimbal_bracket_screw_z_m": {
+    "value": 0.006,
+    "unit": "m",
+    "source": "input",
+    "note": "Bracket screws to the body tube: this far either side of the web (M3 nut clears the web)"
+  },
+  "gimbal_servo_r_m": {
+    "value": 0.0834,
+    "unit": "m",
+    "source": "input",
+    "note": "0.0834 (was 0.0609; 1200 N, 8 in body 2026-11-05). Servo shaft radius from the axis (case must stay inside the body tube)"
+  },
+  "gimbal_servo_above_pivot_m": {
+    "value": 0.043,
+    "unit": "m",
+    "source": "input",
+    "note": "Servo shaft height above the pivot"
+  },
+  "gimbal_yield_Pa": {
+    "value": 276000000.0,
+    "unit": "Pa",
+    "source": "input",
+    "note": "6061-T6 yield, gimbal ring, arms, mount and brackets"
+  },
+  "gimbal_safety_factor": {
+    "value": 2.0,
+    "unit": "-",
+    "source": "input",
+    "note": "On yield at full thrust"
+  },
+  "orb4_fitting_height_m": {
+    "value": 0.022,
+    "unit": "m",
+    "source": "input",
+    "note": "-4 ORB tube fitting, height above the port face (estimate: check the real fitting)"
+  },
+  "body_tube_bottom_m": {
+    "value": 0.16514407646106627,
+    "unit": "m",
+    "source": "massIteration.py",
+    "note": "Where the body tube ends, height above the nozzle exit: the bottom of the gimbal mount (decided 2026-11-04). The engine hangs out below it"
+  },
+  "m_gimbal_ring_kg": {
+    "value": 0.25412889569765956,
+    "unit": "kg",
+    "source": "CAD",
+    "note": "0.25 (was 0.11725773661818478; 1200 N, 8 in body 2026-11-05). "
+  },
+  "m_gimbal_mount_kg": {
+    "value": 0.20925609561061712,
+    "unit": "kg",
+    "source": "CAD"
+  },
+  "m_gimbal_arm_kg": {
+    "value": 0.02791834550857325,
+    "unit": "kg",
+    "source": "CAD",
+    "note": "0.07 (was 0.020308981737496713; 1200 N, 8 in body 2026-11-05). "
+  },
+  "m_gimbal_bracket_kg": {
+    "value": 0.01772251994287149,
+    "unit": "kg",
+    "source": "CAD"
+  },
+  "m_gimbal_cad_kg": {
+    "value": 0.5825850677197394,
+    "unit": "kg",
+    "source": "CAD",
+    "note": "0.8 (was 0.34218723228521336; 1200 N, 8 in body 2026-11-05). "
+  },
+  "x_body_mid_m": {
+    "value": 2.360940465651454,
+    "unit": "m",
+    "source": "vehicle_layout.py"
+  },
+  "body_tube_below_mount_m": {
+    "value": 0.01,
+    "unit": "m",
+    "source": "input"
+  },
+  "plumb_u_n2o_bot_mm": {
+    "value": 625.0,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_n2o_top_mm": {
+    "value": 2084.6879604789583,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_eth_bot_mm": {
+    "value": 2314.6879604789583,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_eth_top_mm": {
+    "value": 2758.5927783807747,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_he_port_mm": {
+    "value": 3028.5927783807747,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_top_mm": {
+    "value": 4419.7927783807745,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_L_n2o_tube_mm": {
+    "value": 1459.6879604789585,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_L_eth_tube_mm": {
+    "value": 443.90481790181656,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_mov_mid_mm": {
+    "value": 468.25,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_f1_mid_mm": {
+    "value": 554.0999999999999,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_otv_mid_mm": {
+    "value": 110.14999999999999,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_reducer_mid_mm": {
+    "value": 154.2,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_u_hose_low_mm": {
+    "value": 371.7,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "body_id_m": {
+    "value": 0.1985,
+    "unit": "m",
+    "source": "input",
+    "note": "Wildman G12-8.0: 7.815 in ID, 8.005 in OD, listed 19.8 oz/ft (1.84 kg/m). body_tube_kg_per_m uses 1.85 g/cc (2.80 kg/m) because the listing looks low: weigh a sample"
+  },
+  "n2o_eth_gap_m": {
+    "value": 0.23,
+    "unit": "m",
+    "source": "input",
+    "note": "Nitrous top to ethanol bottom: F-2 and MFV on the axis, nitrous vent and relief around them"
+  },
+  "plumb_u_he2_port_mm": {
+    "value": 3724.1927783807746,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "plumb_bottle_len_mm": {
+    "value": 515.6,
+    "unit": "mm",
+    "source": "plumbing_layout.py"
+  },
+  "structure_SF_metal_yield": {
+    "value": 2.0,
+    "unit": "-",
+    "source": "input"
+  },
+  "structure_SF_composite_ult": {
+    "value": 3.0,
+    "unit": "-",
+    "source": "input"
+  },
+  "structure_SF_screw_proof": {
+    "value": 2.0,
+    "unit": "-",
+    "source": "input"
+  },
+  "structure_landing_g": {
+    "value": 4.389943684774951,
+    "unit": "g",
+    "source": "structure.py"
+  },
+  "structure_min_SF_ratio": {
+    "value": 0.40532682536246906,
+    "unit": "-",
+    "source": "structure.py"
+  },
+  "structure_min_SF_item": {
+    "value": "Joint 1 (u 1468): tube bearing",
+    "unit": "-",
+    "source": "structure.py"
+  },
+  "structure_bending_Hz_tube": {
+    "value": 10.883425191001443,
+    "unit": "Hz",
+    "source": "structure.py"
+  },
+  "structure_bending_Hz_with_tanks": {
+    "value": 17.38210157975829,
+    "unit": "Hz",
+    "source": "structure.py"
+  },
+  "or_apogee_margin_m": {
+    "value": 366.86446350203937,
+    "unit": "m",
+    "source": "openrocket_sim.py"
+  },
+  "or_apogee_no_margin_m": {
+    "value": 482.041279387094,
+    "unit": "m",
+    "source": "openrocket_sim.py"
+  },
+  "or_stability_cal": {
+    "value": -11.998083716880855,
+    "unit": "cal",
+    "source": "openrocket_sim.py"
+  },
+  "attitude_worst_lean_deg_8mps": {
+    "value": 334.56215989713905,
+    "unit": "deg",
+    "source": "attitude_check.py"
+  },
+  "attitude_worst_lean_deg_0mps": {
+    "value": 365.6342740175952,
+    "unit": "deg",
+    "source": "attitude_check.py"
+  },
+  "always_lit_apogee_m": {
+    "value": 364.0930132800456,
+    "unit": "m",
+    "source": "attitude_check.py"
+  },
+  "or_full_thrust_s_margin": {
+    "value": 9.54399999997895,
+    "unit": "s",
+    "source": "openrocket_sim.py"
+  }
+}
