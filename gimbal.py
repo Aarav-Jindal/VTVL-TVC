@@ -115,7 +115,7 @@ gap_mount = r_mount_i - (r_ring_o*np.cos(th) + h_r/2*np.sin(th))
 r_arm_o = np.hypot(d.get("gimbal_arm_riser_r_out_m"), rw/2)
 z_low_ = (h_r/2 + r_arm_o*np.sin(th))/np.cos(th) # the part of the riser below the pivot that swings level with the ring's lower inside edge
 gap_arm = d.get("gimbal_ring_id_m")/2 - (r_arm_o*np.cos(th) + max(d.get("gimbal_arm_top_above_pivot_m"), z_low_)*np.sin(th))
-# The flange sits below the ring, wider than its opening (decided 2026-11-04): check the gap as the engine swings on the inner pins
+# The flange sits below the ring, wider than its opening: check the gap as the engine swings on the inner pins
 T_fl_ = d.get("inj_flange_thickness_m"); foot_ = d.get("gimbal_arm_foot_t_m"); r_bc_ = d.get("bolt_circle_d_m")/2
 gap_flange = min((p - T_fl_)*np.cos(th) - d.get("flange_outer_d_m")/2*np.sin(th), # flange corner
                  (p - T_fl_ - foot_ - 0.005)*np.cos(th) - (r_bc_*np.cos(np.radians(22.5)) + 0.00425)*np.sin(th)) - h_r/2 # arm-foot bolt heads

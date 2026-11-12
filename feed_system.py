@@ -204,7 +204,7 @@ print(f"Radial screws:                 {n_b} x {d_b*1e3:.2f} mm: shear SF {SF_bo
 problems = []
 for key, label in (("ox", "nitrous"), ("fu", "ethanol")):
     p = lines[key]; _, total, v, v_hose = upstream_dP(p, 1.0)
-    v_limit = d.get("ox_line_velocity_max_mps") if key == "ox" else d.get("line_velocity_max_mps") # nitrous exception accepted 2026-11-05
+    v_limit = d.get("ox_line_velocity_max_mps") if key == "ox" else d.get("line_velocity_max_mps") # nitrous has its own, higher speed limit
     if max(v, v_hose) > v_limit: problems.append(f"{label} line too fast")
     if tube_rating(p) < P_relief_flow: problems.append(f"{label} tube rated below the relief pressure")
 if any(np.isnan(r["P_ox_man"]) or np.isnan(r["P_fu_man"]) for r in rows): problems.append("injector holes can't pass the flow even with a throttle valve wide open")

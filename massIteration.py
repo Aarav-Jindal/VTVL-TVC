@@ -76,7 +76,7 @@ P_min_Pa = P_min * psiToPa
 
 # Check the chosen tube wall is thick enough (hoop stress)
 t_required = P_tank_Pa * SF * r_out / sigma
-if wall < P_tank_Pa * d.get("tank_wall_SF_accepted") * r_out / sigma: # SF 1.99 on this wall accepted 2026-11-05
+if wall < P_tank_Pa * d.get("tank_wall_SF_accepted") * r_out / sigma: # the tube wall only has to meet tank_wall_SF_accepted, not the full SF
     print(f"WARNING: wall {wall*1e3:.2f} mm is thinner than required {t_required*1e3:.2f} mm")
 
 A_in = np.pi * r_in**2 # tank inner cross-section (m^2)
@@ -84,7 +84,7 @@ A_metal = np.pi * (r_out**2 - r_in**2) # tube wall cross-section (m^2)
 
 converged = False
 for iteration in range(1, maxIterations + 1):
-    # Propellant. The tanks are frozen at this mass (decided 2026-11-06): a new mass in the parts list changes T/W and apogee, not the tanks, so the CAD stays in step
+    # Propellant. The tanks are frozen at this mass: a new mass in the parts list changes T/W and apogee, not the tanks, so the CAD stays in step
     m_prop = propellantFraction * m_sizingFrozen
     m_N2O = m_prop * mixtureRatio / (1 + mixtureRatio)
     m_ethanol = m_prop - m_N2O

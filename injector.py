@@ -2,7 +2,7 @@
 # Nitrous flows down the inside of the pintle and sprays outward (radially) through holes near its tip.
 # Ethanol flows along the outside of the pintle through a ring of small axial holes (axial streams).
 # The radial nitrous jets cross the axial ethanol streams, which is where they mix.
-# (Swapped from ethanol-radial: the ethanol flow is too small for radial holes with good coverage.)
+# (Not the other way round: the ethanol flow is too small for radial ethanol holes with good coverage.)
 # Run cea_analysis.py, massIteration.py and heat_transfer.py first (or run_all.py).
 import numpy as np
 from CoolProp.CoolProp import PropsSI

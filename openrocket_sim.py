@@ -1,7 +1,7 @@
 # OpenRocket model of the climb: builds the rocket from the same mass layout as structure.py (vehicle_layout.py's stations,
 # the CAD's tube and dome), writes the flight's thrust as a motor, runs the simulations and saves .ork files in sim/.
-# Added 2026-11-07: dome first, then other nose shapes in the sim before any CAD change.
-# The flight plan is flight_plan.py's (engine never off, switched 2026-11-07): full thrust, then minimum throttle over the top and
+# Runs the dome nose, plus ogive and von Karman noses for comparison (sim/nose_variants).
+# The flight plan is flight_plan.py's (engine never off): full thrust, then minimum throttle over the top and
 # down, then full thrust to land, then the hover. The motor carries that whole thrust history, so the mass drops as it should, but the
 # runs stop a few seconds past apogee: OpenRocket can't steer, and a rocket that's stable going up is unstable coming down tail first.
 # Zero wind, launched straight up; the gimbal is what holds it straight in reality, so wind runs would mean nothing here.
@@ -72,7 +72,7 @@ def write_motor(name, plan):
     return path
 
 for old in glob.glob(os.path.join(MOTOR_DIR, "VTVL-climb-*.eng")) + glob.glob(os.path.join(OUT, "VTVL-climb-*.eng")):
-    os.remove(old)                                                           # this script's motors for the old plan (engine off over the top)
+    os.remove(old)                                                           # leftover motor files from the engine-off plan
 CASES = {}
 for key, label, K in (("margin", "with margins", S.K_MARGIN), ("no_margin", "no margins", 1.0)):
     wet = DRY_NO_MARGIN*K + m_prop + m_He

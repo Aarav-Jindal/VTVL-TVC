@@ -1,8 +1,8 @@
 # The flight plan: how the propellant is spent, shared by openrocket_sim.py, flight_plot.py and attitude_check.py.
-# Current plan, picked 2026-11-07: the engine never goes off. Full thrust to climb, then the minimum throttle over the top
+# Current plan: the engine never goes off. Full thrust to climb, then the minimum throttle over the top
 # and on the way down, then full thrust to stop at the ground, then a 5 s hover, with 10% of the propellant kept in reserve.
-# The gimbal steers the whole flight; attitude_check.py showed the old plan (engine off from cutoff to a relight) tumbles.
-# The old plan is kept as engine_off_plan() for attitude_check.py. 1-D, straight up and down.
+# The gimbal steers the whole flight; attitude_check.py shows that a plan with the engine off from cutoff to a relight tumbles.
+# That plan is engine_off_plan(), used by attitude_check.py. 1-D, straight up and down.
 import math
 import design as d
 
@@ -10,7 +10,7 @@ g, RHO = 9.80665, 1.225
 F = d.get("thrust_N"); VE = d.get("Isp_real_s")*g
 THR_MIN = d.get("throttle_min"); HOVER_S = 5.0; RESERVE = 1.1
 A_REF = math.pi*(d.get("body_od_m")/2)**2
-CD_UP, CD_DOWN = 0.52, 0.8          # dome first (OpenRocket, 2026-11-07); base first, blunt end leading [est]
+CD_UP, CD_DOWN = 0.52, 0.8          # dome first (OpenRocket); base first, blunt end leading [est]
 
 def always_lit(m0, t1, drag=True, dt=0.002, record=False, prop=None):
     """Fly the plan with t1 s of full thrust. Returns apogee, propellant used (with the hover), phase times and, if asked, the timeline.
@@ -45,7 +45,7 @@ def always_lit_plan(m0, prop, drag=True):
     return best
 
 def engine_off_plan(m0, prop):
-    """The old plan (until 2026-11-07), no drag, as estimated at the time: full thrust to a burnout speed, engine off over the top and
+    """Engine-off plan, no drag: full thrust to a burnout speed, engine off over the top and
     down, relit for a full-thrust landing burn, 5 s hover, 10% reserve. Returns burnout speed, apogee, burn time, propellant burned."""
     mdot = F/VE
     def flight(vb):

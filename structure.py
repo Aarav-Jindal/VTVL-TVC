@@ -1,6 +1,6 @@
 # Structure check: hand formulas for every part that carries load, at liftoff, full gimbal tilt with a gust, landing and
-# handling. Prints a safety factor (SF) for each check against its minimum and saves the lowest. The checks, load cases and
-# minimums were set on 2026-11-07. The closest parts get FEA separately.
+# handling. Prints a safety factor (SF) for each check against its minimum and saves the lowest.
+# The closest parts also need FEA.
 # Run last, after plumbing_layout.py: it reads design_values.json, parts_list.csv and the layout stations.
 # Checked by other scripts, not here: tank walls, caps and cap screws (feed_system.py), engine flanges and bolts
 # (chamber_hardware.py, injector_hardware.py), gimbal ring, pins and arms (gimbal.py).
@@ -17,7 +17,7 @@ with contextlib.redirect_stdout(io.StringIO()):
 g = 9.80665
 SF_METAL, SF_COMP, SF_HW = d.get("structure_SF_metal_yield"), d.get("structure_SF_composite_ult"), d.get("structure_SF_screw_proof")
 
-# ---- Materials, MPa (2026-11-07). [est] = typical for the material, not published for the exact part ----
+# ---- Materials, MPa. [est] = typical for the material, not published for the exact part ----
 # 6061-T6 [aerospacemetals.com ASM sheet]: bearing at e/D 2. Fbry at e/D 1.5 is the MIL-HDBK-5 value, not confirmed online [est]
 AL = dict(Fty=276.0, Fsy=0.577*276.0, Fbry15=345.0, Fbry20=386.0, E=68900.0)
 # G12: Wildman publishes no strengths. Typical filament-wound glass-epoxy tube [est], Gund F2016: 138 axial tension and compression,

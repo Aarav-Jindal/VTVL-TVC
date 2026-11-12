@@ -1,10 +1,10 @@
-# Engine-off attitude check (rough), 2026-11-07: what the rocket's lean does between engine cutoff and the
+# Engine-off attitude check (rough): what the rocket's lean does between engine cutoff and the
 # relight, with wind, a small lean and spin at cutoff, and an uncertain aerodynamic push. Then the gimbal's chance of taking it back.
 # Also the other plan: the engine never goes off (minimum throttle after the climb), and the apogee that gives with the same propellant.
 # 2-D pitch model: rigid body, gravity, axial drag, a slender-body push at whichever end leads (CNa, the unstable part), and crossflow
 # drag along the body and folded legs (which also damps the swing). Masses and stations from structure.py, with the budget's margins.
 # Rough on purpose: the coefficients are textbook estimates, so it runs every combination and reports the worst.
-# Result (2026-11-07): it tumbles, so the flight plan was switched to the engine never off (flight_plan.py). Kept as the record.
+# Result: it tumbles, which is why flight_plan.py keeps the engine lit the whole flight.
 import math
 import numpy as np
 import design as d
@@ -20,7 +20,7 @@ CD_UP, CD_DOWN = fp.CD_UP, fp.CD_DOWN                                        # a
 ETA_CDC = 0.65*1.2                                                           # crossflow drag: cylinder 1.2 x finite-length factor 0.65 [Allen-Perkins, est]
 CNA = (1.0, 2.0, 3.0)                                                        # slender-body push at the leading end, per rad: 2 by theory, spread for the blunt ends
 
-# ---- The rocket at cutoff in the old plan (with margins): dry parts, helium, and the propellant kept for landing at the bottom of each tank ----
+# ---- The rocket at cutoff in the engine-off plan (with margins): dry parts, helium, and the propellant kept for landing at the bottom of each tank ----
 t_b = fp.engine_off_plan(d.get("m_wet_kg"), d.get("m_prop_kg"))[2]; burned = mdot*t_b
 lumps = [(m, x_of(u)) for _, m, u in S.dry] + [(d.get("m_He_kg"), x_of(0.5*(S.PR.u_nb + S.PR.u_nt)))]
 r_in = d.get("tank_outer_radius_m") - d.get("tank_wall_m"); A_in = math.pi*r_in**2

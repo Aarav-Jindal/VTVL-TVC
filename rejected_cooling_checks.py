@@ -1,4 +1,4 @@
-# Cooling options that were checked and rejected, kept as a record of why.
+# Cooling options that were checked and rejected, and why.
 # 1. Annular-gap jacket at the throat: too little ethanol flow, so the coolant is too slow (h_c far too low).
 # 2. Copper heat-sink throat: the hot surface passes the copper limit within seconds, far short of a ~31 s burn.
 # Chosen instead: lower chamber pressure (300 psi) + milled regen channels + 20% film (see heat_transfer.py).
